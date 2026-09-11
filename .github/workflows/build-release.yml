@@ -43,7 +43,7 @@ jobs:
 
           mkdir -p release
 
-          MAIN_JAR=$(ls plugin/build/libs/EssentialsC-*.jar | grep -vE "(sources|javadoc|plain)" | head -n1)
+          MAIN_JAR=$(ls plugin/essc/build/libs/EssentialsC-*.jar | grep -vE "(sources|javadoc|plain)" | head -n1)
           echo "Main JAR: $MAIN_JAR"
           cp "$MAIN_JAR" release/EssentialsC-v${VERSION}-${COMMIT_ID}.jar
 
