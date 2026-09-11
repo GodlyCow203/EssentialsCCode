@@ -68,7 +68,14 @@ public class CommandRegistrar {
         register("vanish",         new VanishCommand(plugin));
         register("repair",         new RepairCommand(plugin));
         register("rename",         new RenameCommand(plugin));
-        register("scoreboard",     new ScoreboardCommand(plugin));
+
+        if (plugin.getConfigManager().isScoreboardEnabled()) {
+            register("scoreboard", new ScoreboardCommand(plugin));
+        } else {
+            CommandRegistration.unregisterIfOwnedByE("scoreboard");
+            plugin.debug("Scoreboard command unregistered (scoreboard.enabled is false)");
+        }
+
         register("tpa",            new TPACommand(plugin));
         register("tpahere",        new TPAHereCommand(plugin));
         register("tpaccept",       new TPAcceptCommand(plugin));

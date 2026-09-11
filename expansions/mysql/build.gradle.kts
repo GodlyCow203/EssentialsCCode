@@ -8,7 +8,7 @@ tasks.shadowJar {
 
 dependencies {
     compileOnly(project(":api"))
-    compileOnly(project(":plugin"))
+    compileOnly(project(":plugin:essc"))
     // Provided natively by Paper at runtime; needed only to compile against MiniMessage/Component.
     compileOnly("net.kyori:adventure-api:4.17.0")
     compileOnly("net.kyori:adventure-text-minimessage:4.17.0")

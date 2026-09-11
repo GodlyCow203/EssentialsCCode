@@ -1,0 +1,9 @@
+name: EssentialsCTest
+version: 4.3.0
+main: net.godlycow.org.essc.test.EssentialsCTest
+api-version: '1.20'
+description: Tests ig
+commands:
+  test-scoreboard:
+    usage: /test-scoreboard
+

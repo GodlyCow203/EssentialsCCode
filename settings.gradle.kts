@@ -5,6 +5,7 @@ plugins {
 rootProject.name = "essentialsc"
 include("api")
 include("expansions:mysql")
-include("plugin")
+include("plugin:essc")
+include("plugin:test")
 include("test-migration")
 // include("module-test")
