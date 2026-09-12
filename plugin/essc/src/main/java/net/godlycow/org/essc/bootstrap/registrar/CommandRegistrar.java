@@ -72,7 +72,8 @@ public class CommandRegistrar {
         if (plugin.getConfigManager().isScoreboardEnabled()) {
             register("scoreboard", new ScoreboardCommand(plugin));
         } else {
-            CommandRegistration.unregisterIfOwnedByE("scoreboard");
+            CommandRegistration.unregisterCommand("scoreboard");
+            CommandRegistration.unregisterCommand("essentialsc:scoreboard");
             plugin.debug("Scoreboard command unregistered (scoreboard.enabled is false)");
         }
 
@@ -163,14 +164,16 @@ public class CommandRegistrar {
         if (plugin.getConfigManager().isShopEnabled()) {
             register("shop", new ShopCommand(plugin));
         } else {
-            CommandRegistration.unregisterIfOwnedByE("shop");
+            CommandRegistration.unregisterCommand("shop");
+            CommandRegistration.unregisterCommand("essentialsc:shop");
             plugin.debug("Shop command unregistered (shop.enabled is false)");
         }
 
         if (plugin.getConfigManager().isRTPCommandRegistered()) {
             register("rtp", new RTPCommand(plugin));
         } else {
-            CommandRegistration.unregisterIfOwnedByE("rtp");
+            CommandRegistration.unregisterCommand("rtp");
+            CommandRegistration.unregisterCommand("essentialsc:rtp");
             plugin.debug("RTP command unregistered (rtp.register-command is false)");
         }
 
@@ -179,16 +182,20 @@ public class CommandRegistrar {
             register("worth", new WorthCommand(plugin));
             register("quicksell", new QuickSellCommand(plugin));
         } else {
-            CommandRegistration.unregisterIfOwnedByE("sell");
-            CommandRegistration.unregisterIfOwnedByE("worth");
-            CommandRegistration.unregisterIfOwnedByE("quicksell");
+            CommandRegistration.unregisterCommand("sell");
+            CommandRegistration.unregisterCommand("essentialsc:sell");
+            CommandRegistration.unregisterCommand("worth");
+            CommandRegistration.unregisterCommand("essentialsc:worth");
+            CommandRegistration.unregisterCommand("quicksell");
+            CommandRegistration.unregisterCommand("essentialsc:quicksell");
             plugin.debug("Sell commands unregistered (sell.enabled is false)");
         }
 
         if (plugin.getConfigManager().isAHEnabled()) {
             register("ah", new AhCommand(plugin, ahGuiManager));
         } else {
-            CommandRegistration.unregisterIfOwnedByE("ah");
+            CommandRegistration.unregisterCommand("ah");
+            CommandRegistration.unregisterCommand("essentialsc:ah");
             plugin.debug("AH command unregistered (ah.enabled is false)");
         }
 
@@ -196,7 +203,8 @@ public class CommandRegistrar {
             register("trash", new TrashCommand(plugin, plugin.getGuiFramework()));
 
         } else {
-            CommandRegistration.unregisterIfOwnedByE("trash");
+            CommandRegistration.unregisterCommand("trash");
+            CommandRegistration.unregisterCommand("essentialsc:trash");
             plugin.debug("Trash command unregistered ( trash.enabled is false");
         }
     }
@@ -204,8 +212,8 @@ public class CommandRegistrar {
     private void register(String name, Command command) {
 
         if (!commandsConfig.isEnabled(name)) {
-            CommandRegistration.unregisterIfOwnedByE(name);
-            CommandRegistration.unregisterIfOwnedByE("essentialsc:" + name);
+            CommandRegistration.unregisterCommand(name);
+            CommandRegistration.unregisterCommand("essentialsc:" + name);
             plugin.debug("Command '" + name + "' disabled in commands.yml – unregistered.");
             return;
         }

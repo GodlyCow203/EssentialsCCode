@@ -6,4 +6,6 @@ description: Tests ig
 commands:
   test-scoreboard:
     usage: /test-scoreboard
+  test-ah:
+    usage: /test-ah
 

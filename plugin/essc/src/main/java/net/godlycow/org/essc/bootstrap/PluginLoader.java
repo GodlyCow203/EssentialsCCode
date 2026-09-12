@@ -4,8 +4,10 @@ import net.godlycow.org.essc.EssentialsC;
 import net.godlycow.org.essc.modules.afk.AFKManager;
 import net.godlycow.org.essc.api.APIProvider;
 import net.godlycow.org.essc.api.impl.EssentialsCAPIImpl;
+import net.godlycow.org.essc.CommandRegistration;
 import net.godlycow.org.essc.modules.auction.AhSoundManager;
 import net.godlycow.org.essc.modules.auction.AuctionManager;
+import net.godlycow.org.essc.modules.auction.gui.AhGuiHolder;
 import net.godlycow.org.essc.modules.auction.gui.AhGuiManager;
 import net.godlycow.org.essc.modules.back.BackManager;
 import net.godlycow.org.essc.modules.backup.BackupManager;
@@ -197,6 +199,8 @@ public final class PluginLoader {
             plugin.setAhGuiManager(ahGuiManager);
 
             new AhListener(plugin, new AhCommand(plugin, ahGuiManager));
+        } else {
+            unloadAuctionHouse();
         }
 
         if (plugin.getConfigManager().isShopEnabled()) {
@@ -257,6 +261,43 @@ public final class PluginLoader {
         UsageCharts.register(plugin, metrics);
 
         plugin.getFastStatsManager().ready();
+    }
+
+    private void unloadAuctionHouse() {
+        plugin.debug("Auction House is disabled in config – fully unloading.");
+
+        CommandRegistration.unregisterCommand("ah");
+        CommandRegistration.unregisterCommand("essentialsc:ah");
+        CommandRegistration.unregisterCommand("auction");
+        CommandRegistration.unregisterCommand("essentialsc:auction");
+        plugin.debug("AH commands unregistered.");
+
+        for (org.bukkit.entity.Player player : plugin.getServer().getOnlinePlayers()) {
+            if (player.getOpenInventory().getTopInventory() != null
+                    && player.getOpenInventory().getTopInventory().getHolder() instanceof AhGuiHolder) {
+                player.closeInventory();
+            }
+        }
+
+        for (org.bukkit.event.HandlerList handlerList : org.bukkit.event.HandlerList.getHandlerLists()) {
+            for (org.bukkit.plugin.RegisteredListener rl : handlerList.getRegisteredListeners()) {
+                if (rl.getPlugin().equals(plugin)) {
+                    String name = rl.getListener().getClass().getSimpleName();
+                    if (name.contains("Auction") || name.contains("Ah")) {
+                        handlerList.unregister(rl);
+                        plugin.debug("Unregistered AH listener: " + name);
+                    }
+                }
+            }
+        }
+
+        if (plugin.getAuctionManager() != null) {
+            plugin.getAuctionManager().shutdown();
+            plugin.setAuctionManager(null);
+        }
+
+        plugin.setAhGuiManager(null);
+        plugin.debug("Auction House fully unloaded.");
     }
 
     private void registerPlaceholderAPI() {
